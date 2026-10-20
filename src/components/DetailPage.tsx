@@ -10,7 +10,8 @@ import { DataConsumptionCharts } from './detail/DataConsumptionCharts';
 import { BillingCycleView } from './detail/BillingCycleView';
 import { DeviceHistoryView } from './detail/DeviceHistoryView';
 import { SecurityAlertsWidget } from './detail/SecurityAlertsWidget';
-import { Shield, Navigation, Smartphone, PhoneCall, Database, BarChart3, Receipt, History, ShieldAlert } from 'lucide-react';
+import { generateSubscriberPdfReport } from '../utils/pdfGenerator';
+import { Shield, Navigation, Smartphone, PhoneCall, Database, BarChart3, Receipt, History, ShieldAlert, FileText } from 'lucide-react';
 
 interface DetailPageProps {
   subscriber: Subscriber;
@@ -43,7 +44,7 @@ export const DetailPage: React.FC<DetailPageProps> = ({
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-6 py-8 space-y-8 bg-white min-h-full">
       {/* 1. Customer Identity Dossier Banner */}
       <CustomerIdentityCard
         subscriber={subscriber}
@@ -52,22 +53,33 @@ export const DetailPage: React.FC<DetailPageProps> = ({
         isRefreshing={isRefreshing}
       />
 
-      {/* Section Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveSection(item.id as typeof activeSection)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-              activeSection === item.id
-                ? 'bg-cyan-500 text-slate-950 font-semibold shadow-sm'
-                : 'bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800'
-            }`}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </button>
-        ))}
+      {/* Section Filter Pills & Quick PDF Action */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setActiveSection(item.id as typeof activeSection)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
+                activeSection === item.id
+                  ? 'bg-cyan-600 text-white font-semibold shadow-xs'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 shadow-xs'
+              }`}
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </div>
+
+        <button
+          onClick={() => generateSubscriberPdfReport(subscriber)}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs rounded-lg transition-colors whitespace-nowrap shadow-xs"
+          title="Download forensic summary PDF dossier"
+        >
+          <FileText className="w-3.5 h-3.5" />
+          <span>Download PDF Report</span>
+        </button>
       </div>
 
       {/* Security & Anomaly Alerts Section */}
