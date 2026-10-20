@@ -1,0 +1,6 @@
+{
+  "name": "IPDR Real-Time Usage Monitoring Console",
+  "description": "Carrier-grade Internet Protocol Data Record monitoring console featuring multi-vector subscriber intelligence, dual location tracking (Cell Tower & App GPS), WhatsApp call logs, and credit scoring.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

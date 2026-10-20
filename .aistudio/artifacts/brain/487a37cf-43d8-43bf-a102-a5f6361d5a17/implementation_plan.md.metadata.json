@@ -1,0 +1,6 @@
+{
+  "summary":  "Updated IPDR implementation plan with WhatsApp Call Log enhancements: deduplicated contact-grouped records with call frequency count, individual call duration per record, and clickable phone numbers that cross-navigate directly to the callee's subscriber detail page.",
+  "updatedAt":  "2026-10-20T15:07:38.148719253Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}
