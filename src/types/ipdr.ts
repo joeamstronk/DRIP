@@ -35,10 +35,19 @@ export interface CreditScoreHistoryPoint {
   event?: string; // Telco behavioral event that drove the score
 }
 
+export interface FraudAlertTicket {
+  ticketId: string;
+  flaggedAt: string;
+  reason: string;
+  investigatorNotes: string;
+  dispatchedChannels: string[];
+  status: 'ACTIVE' | 'RESOLVED';
+}
+
 export interface TelcoCreditScore {
   score: number; // 300 to 850
   grade: 'A+ (Elite)' | 'A (Prime)' | 'B (Standard)' | 'C (Subprime)' | 'D (High Risk)';
-  riskLevel: 'LOW' | 'MODERATE' | 'ELEVATED' | 'HIGH';
+  riskLevel: 'LOW' | 'MODERATE' | 'ELEVATED' | 'HIGH' | 'CRITICAL';
   paymentHistoryPercent: number;
   monthlyRechargeAvgIdr: number;
   simTenureMonths: number;
@@ -47,6 +56,7 @@ export interface TelcoCreditScore {
   postpaidEligible: boolean;
   scoreFactors: ScoreFactor[];
   scoreHistory?: CreditScoreHistoryPoint[];
+  fraudAlert?: FraudAlertTicket;
 }
 
 export interface MostOpenedApp {
