@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Download, Printer, RefreshCw, Smartphone, Globe, Shield, MapPin, CheckCircle2, FileText } from 'lucide-react';
+import { ArrowLeft, Download, Printer, RefreshCw, Smartphone, Globe, Shield, MapPin, CheckCircle2, FileText, Users } from 'lucide-react';
 import { Subscriber } from '../../types/ipdr';
 import { generateSubscriberPdfReport } from '../../utils/pdfGenerator';
 
@@ -137,6 +137,19 @@ export const CustomerIdentityCard: React.FC<CustomerIdentityCardProps> = ({
                 <span>Civil ID (NIK): </span>
                 <strong className="text-cyan-800 font-bold">{subscriber.civilId}</strong>
               </div>
+              {subscriber.familyTree && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <div className="flex items-center gap-1 text-slate-700">
+                    <Users className="w-3 h-3 text-cyan-600" />
+                    <span>No. KK: </span>
+                    <strong className="text-slate-800">{subscriber.familyTree.familyCardNumber}</strong>
+                    <span className="text-[10px] bg-slate-100 text-slate-600 px-1 py-0.2 rounded font-semibold ml-0.5">
+                      {subscriber.familyTree.members.length} members
+                    </span>
+                  </div>
+                </>
+              )}
               <span aria-hidden="true">·</span>
               <div>
                 <span>MSISDN: </span>

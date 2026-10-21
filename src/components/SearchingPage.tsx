@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Phone, Globe, UserCheck, Smartphone, Hash, ArrowUpRight, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Search, Phone, Globe, UserCheck, Smartphone, Hash, ArrowUpRight, CheckCircle2, AlertCircle, Users } from 'lucide-react';
 import { Subscriber, SearchVector } from '../types/ipdr';
 
 interface SearchingPageProps {
@@ -29,6 +29,12 @@ export const SearchingPage: React.FC<SearchingPageProps> = ({
       desc: 'Prime Corporate Account',
     },
     {
+      label: 'KK Santoso Family',
+      type: 'Family Card (KK)',
+      value: '3174051201080042',
+      desc: 'Family Tree Registry (6 Members)',
+    },
+    {
       label: 'Reza Aditya',
       type: 'IP Address',
       value: '114.124.205.88',
@@ -43,12 +49,12 @@ export const SearchingPage: React.FC<SearchingPageProps> = ({
   ];
 
   const searchVectorsList: { id: SearchVector | 'all'; label: string; icon: React.ReactNode; placeholder: string }[] = [
-    { id: 'all', label: 'All Vectors (Auto-Detect)', icon: <Search className="w-3.5 h-3.5" />, placeholder: 'Enter Phone, IP, IMSI, IMEI, or Civil ID (NIK)...' },
+    { id: 'all', label: 'All Vectors (Auto-Detect)', icon: <Search className="w-3.5 h-3.5" />, placeholder: 'Enter Phone, IP, IMSI, IMEI, Civil ID (NIK), or Family Card (KK)...' },
     { id: 'phone', label: 'Phone Number (MSISDN)', icon: <Phone className="w-3.5 h-3.5" />, placeholder: 'e.g. +62 812-5550-1928 or 081255501928' },
+    { id: 'civilId', label: 'Civil ID (NIK) & Family Tree', icon: <Hash className="w-3.5 h-3.5" />, placeholder: 'e.g. 3174051904880003 or Family Card (KK) 3174051201080042' },
     { id: 'ip', label: 'IP Address (v4/v6)', icon: <Globe className="w-3.5 h-3.5" />, placeholder: 'e.g. 180.252.74.119 or 2404:c0:30a1::14' },
     { id: 'subscriberId', label: 'Subscriber ID / IMSI', icon: <UserCheck className="w-3.5 h-3.5" />, placeholder: 'e.g. SUB-ID-904281 or 510100482910481' },
     { id: 'imei', label: 'Phone IMEI', icon: <Smartphone className="w-3.5 h-3.5" />, placeholder: 'e.g. 864920049281729' },
-    { id: 'civilId', label: 'Civil Number ID (NIK)', icon: <Hash className="w-3.5 h-3.5" />, placeholder: 'e.g. 3174051904880003' },
   ];
 
   const currentPlaceholder = useMemo(() => {
@@ -88,8 +94,22 @@ export const SearchingPage: React.FC<SearchingPageProps> = ({
         );
       }
       if (searchVector === 'civilId') {
-        return normalize(sub.civilId).includes(cleanQuery);
+        const matchesSubNik = normalize(sub.civilId).includes(cleanQuery);
+        const matchesFamilyNik = sub.familyTree?.members.some(
+          (m) => normalize(m.nik).includes(cleanQuery) || m.name.toLowerCase().includes(query)
+        );
+        const matchesKK = sub.familyTree
+          ? normalize(sub.familyTree.familyCardNumber).includes(cleanQuery)
+          : false;
+        return matchesSubNik || matchesFamilyNik || matchesKK;
       }
+
+      const matchesFamily = sub.familyTree
+        ? normalize(sub.familyTree.familyCardNumber).includes(cleanQuery) ||
+          sub.familyTree.members.some(
+            (m) => normalize(m.nik).includes(cleanQuery) || m.name.toLowerCase().includes(query)
+          )
+        : false;
 
       return (
         sub.name.toLowerCase().includes(query) ||
@@ -99,7 +119,8 @@ export const SearchingPage: React.FC<SearchingPageProps> = ({
         normalize(sub.id).includes(cleanQuery) ||
         normalize(sub.simCardImsi).includes(cleanQuery) ||
         normalize(sub.civilId).includes(cleanQuery) ||
-        normalize(sub.currentImei).includes(cleanQuery)
+        normalize(sub.currentImei).includes(cleanQuery) ||
+        matchesFamily
       );
     });
   }, [subscribers, searchQuery, searchVector]);
@@ -245,9 +266,18 @@ export const SearchingPage: React.FC<SearchingPageProps> = ({
                             {subscriber.status}
                           </span>
                         </div>
-                        <div className="text-xs text-slate-500 flex items-center gap-1.5 font-mono-numbers">
+                        <div className="text-xs text-slate-500 flex items-center gap-1.5 font-mono-numbers flex-wrap">
                           <span>NIK:</span>
                           <span className="text-slate-800 font-bold">{subscriber.civilId}</span>
+                          {subscriber.familyTree && (
+                            <>
+                              <span aria-hidden="true">·</span>
+                              <span className="text-[11px] text-slate-600 flex items-center gap-1 font-sans">
+                                <Users className="w-3 h-3 text-cyan-600" />
+                                <span>KK: {subscriber.familyTree.familyCardNumber.slice(0, 8)}... ({subscriber.familyTree.members.length} members)</span>
+                              </span>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>

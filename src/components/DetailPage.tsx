@@ -10,8 +10,9 @@ import { DataConsumptionCharts } from './detail/DataConsumptionCharts';
 import { BillingCycleView } from './detail/BillingCycleView';
 import { DeviceHistoryView } from './detail/DeviceHistoryView';
 import { SecurityAlertsWidget } from './detail/SecurityAlertsWidget';
+import { FamilyTreeView } from './detail/FamilyTreeView';
 import { generateSubscriberPdfReport } from '../utils/pdfGenerator';
-import { Shield, Navigation, Smartphone, PhoneCall, Database, BarChart3, Receipt, History, ShieldAlert, FileText } from 'lucide-react';
+import { Shield, Navigation, Smartphone, PhoneCall, Database, BarChart3, Receipt, History, ShieldAlert, FileText, Users } from 'lucide-react';
 
 interface DetailPageProps {
   subscriber: Subscriber;
@@ -25,7 +26,7 @@ export const DetailPage: React.FC<DetailPageProps> = ({
   onNavigateToPhone,
 }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [activeSection, setActiveSection] = useState<'all' | 'security' | 'location' | 'whatsapp' | 'ipdr' | 'billing'>('all');
+  const [activeSection, setActiveSection] = useState<'all' | 'security' | 'family' | 'location' | 'whatsapp' | 'ipdr' | 'billing'>('all');
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -36,6 +37,7 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
   const navItems = [
     { id: 'all', label: 'Complete Dossier (All Sections)', icon: <Shield className="w-3.5 h-3.5" /> },
+    { id: 'family', label: 'Family Tree (NIK Registry)', icon: <Users className="w-3.5 h-3.5" /> },
     { id: 'security', label: 'Security & Anomaly Alerts', icon: <ShieldAlert className="w-3.5 h-3.5" /> },
     { id: 'location', label: '24h Dual Location Tracking', icon: <Navigation className="w-3.5 h-3.5" /> },
     { id: 'whatsapp', label: 'WhatsApp Call Records', icon: <PhoneCall className="w-3.5 h-3.5" /> },
@@ -85,6 +87,15 @@ export const DetailPage: React.FC<DetailPageProps> = ({
       {/* Security & Anomaly Alerts Section */}
       {(activeSection === 'all' || activeSection === 'security') && (
         <SecurityAlertsWidget subscriber={subscriber} />
+      )}
+
+      {/* Family Tree & Civil Registry (Kartu Keluarga / NIK) Section */}
+      {(activeSection === 'all' || activeSection === 'family') && (
+        <FamilyTreeView
+          familyTree={subscriber.familyTree}
+          targetNik={subscriber.civilId}
+          onNavigateToPhone={onNavigateToPhone}
+        />
       )}
 
       {/* Conditional or All Renderings */}

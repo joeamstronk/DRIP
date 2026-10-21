@@ -113,6 +113,16 @@ export const generateSubscriberPdfReport = (subscriber: Subscriber, operatorName
       'Postpaid Financing Status',
       credit.postpaidEligible ? 'QUALIFIED / APPROVED' : 'RESTRICTED',
     ],
+    [
+      '6-Month Score History',
+      credit.scoreHistory
+        ? `${credit.scoreHistory[0].monthShort} (${credit.scoreHistory[0].score}) -> ${credit.scoreHistory[credit.scoreHistory.length - 1].monthShort} (${credit.scoreHistory[credit.scoreHistory.length - 1].score})`
+        : 'Consistent Trend',
+      'Stability Trajectory',
+      credit.scoreHistory
+        ? `${credit.scoreHistory[credit.scoreHistory.length - 1].score - credit.scoreHistory[0].score >= 0 ? '+' : ''}${credit.scoreHistory[credit.scoreHistory.length - 1].score - credit.scoreHistory[0].score} pts (Range: ${Math.min(...credit.scoreHistory.map(s => s.score))}-${Math.max(...credit.scoreHistory.map(s => s.score))})`
+        : 'High Stability Tier',
+    ],
   ];
 
   autoTable(doc, {
@@ -242,6 +252,74 @@ export const generateSubscriberPdfReport = (subscriber: Subscriber, operatorName
     },
     margin: { left: 14, right: 14 },
   });
+
+  // --- SECTION 5: CIVIL REGISTRY & FAMILY TREE (KARTU KELUARGA / NIK CROSS-REFERENCE) ---
+  if (subscriber.familyTree) {
+    if ((doc as any).lastAutoTable.finalY > 200) {
+      doc.addPage();
+      currentY = 20;
+    } else {
+      currentY = (doc as any).lastAutoTable.finalY + 8;
+    }
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...primaryColor);
+    doc.text('5. CIVIL REGISTRY & FAMILY TREE (KARTU KELUARGA / NIK LINK)', 14, currentY);
+    currentY += 4;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...darkTextColor);
+    doc.text(
+      `KK No: ${subscriber.familyTree.familyCardNumber} | Head: ${subscriber.familyTree.headOfHouseholdName} | Address: ${subscriber.familyTree.registeredAddress} (${subscriber.familyTree.kabupatenKota})`,
+      14,
+      currentY
+    );
+    currentY += 3;
+
+    const familyRows = subscriber.familyTree.members.map((m, idx) => {
+      const isTarget = m.nik === subscriber.civilId || m.isTargetSubscriber;
+      return [
+        (idx + 1).toString(),
+        isTarget ? `${m.name} (TARGET)` : m.name,
+        m.nik,
+        m.relationshipLabel,
+        m.gender === 'MALE' ? 'L' : 'P',
+        `${m.age} yo (${m.birthDate})`,
+        m.occupation,
+        m.phone ? m.phone : 'Unlinked',
+      ];
+    });
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['#', 'Full Name', 'Civil ID (NIK)', 'Relationship', 'Sex', 'Age & DOB', 'Occupation', 'MSISDN Phone']],
+      body: familyRows,
+      theme: 'striped',
+      styles: {
+        fontSize: 7.5,
+        cellPadding: 1.8,
+        textColor: darkTextColor,
+      },
+      headStyles: {
+        fillColor: [30, 41, 59],
+        textColor: [248, 250, 252],
+        fontStyle: 'bold',
+      },
+      columnStyles: {
+        0: { cellWidth: 6, halign: 'center' },
+        1: { cellWidth: 38, fontStyle: 'bold' },
+        2: { cellWidth: 32, font: 'courier' },
+        3: { cellWidth: 28 },
+        4: { cellWidth: 10, halign: 'center' },
+        5: { cellWidth: 24 },
+        6: { cellWidth: 24 },
+        7: { cellWidth: 20, font: 'courier' },
+      },
+      margin: { left: 14, right: 14 },
+    });
+  }
 
   // Footer & Cryptographic Audit Seal
   const pageCount = (doc.internal as any).getNumberOfPages();

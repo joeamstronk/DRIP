@@ -25,6 +25,16 @@ export interface ScoreFactor {
   detail: string;
 }
 
+export interface CreditScoreHistoryPoint {
+  month: string; // e.g. "May 2026"
+  monthShort: string; // e.g. "May"
+  score: number; // 300 to 850
+  grade: string; // e.g. "A"
+  change: number; // e.g. +8, -5, 0
+  changeDirection: 'UP' | 'DOWN' | 'STABLE';
+  event?: string; // Telco behavioral event that drove the score
+}
+
 export interface TelcoCreditScore {
   score: number; // 300 to 850
   grade: 'A+ (Elite)' | 'A (Prime)' | 'B (Standard)' | 'C (Subprime)' | 'D (High Risk)';
@@ -36,6 +46,7 @@ export interface TelcoCreditScore {
   creditLimitIdr: number;
   postpaidEligible: boolean;
   scoreFactors: ScoreFactor[];
+  scoreHistory?: CreditScoreHistoryPoint[];
 }
 
 export interface MostOpenedApp {
@@ -172,6 +183,52 @@ export interface SecurityAlert {
   acknowledged?: boolean;
 }
 
+export type FamilyRelationship =
+  | 'HEAD_OF_HOUSEHOLD'
+  | 'SPOUSE'
+  | 'CHILD'
+  | 'PARENT'
+  | 'SIBLING'
+  | 'OTHER_RELATIVE';
+
+export interface FamilyMember {
+  nik: string; // 16-digit civil ID (NIK)
+  name: string;
+  relationship: FamilyRelationship;
+  relationshipLabel: string; // e.g. "Kepala Keluarga", "Istri", "Anak", "Ayah", "Ibu"
+  gender: 'MALE' | 'FEMALE';
+  birthDate: string; // YYYY-MM-DD
+  birthPlace: string;
+  age: number;
+  religion: string;
+  education: string;
+  occupation: string;
+  maritalStatus: 'MARRIED' | 'SINGLE' | 'DIVORCED' | 'WIDOWED';
+  bloodType: string;
+  phone?: string; // MSISDN if registered
+  carrier?: string;
+  linkedSubscriberId?: string;
+  telcoStatus: 'ACTIVE_SUBSCRIBER' | 'EXTERNAL_CARRIER' | 'UNREGISTERED_MINOR';
+  isTargetSubscriber?: boolean;
+  avatarUrl?: string;
+  generation: 1 | 2 | 3; // 1: Parents, 2: Self/Spouse, 3: Children
+}
+
+export interface FamilyTreeData {
+  familyCardNumber: string; // Nomor Kartu Keluarga (KK) 16 digit
+  headOfHouseholdName: string;
+  registeredAddress: string;
+  rtRw: string;
+  kelurahan: string;
+  kecamatan: string;
+  kabupatenKota: string;
+  provinsi: string;
+  postalCode: string;
+  issuingDate: string;
+  dukcapilRegionCode: string;
+  members: FamilyMember[];
+}
+
 export interface Subscriber {
   id: string;
   name: string;
@@ -200,6 +257,7 @@ export interface Subscriber {
   billingSummary: BillingCycleSummary;
   deviceHistory: DeviceHistoryRecord[];
   phoneHistory: PhoneHistoryRecord[];
+  familyTree?: FamilyTreeData;
 }
 
 export interface OperatorUser {

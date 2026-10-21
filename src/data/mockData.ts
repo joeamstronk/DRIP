@@ -3,6 +3,12 @@ import budiPhoto from '../assets/images/avatar_sub_budi_1792508963034.jpg';
 import sitiPhoto from '../assets/images/avatar_sub_siti_1792508963511.jpg';
 import rezaPhoto from '../assets/images/avatar_sub_reza_1792508964258.jpg';
 import dewiPhoto from '../assets/images/avatar_sub_dewi_1792508963896.jpg';
+import {
+  BUDI_FAMILY_TREE,
+  SITI_FAMILY_TREE,
+  REZA_FAMILY_TREE,
+  DEWI_FAMILY_TREE,
+} from './familyMockData';
 
 export const CURRENT_OPERATOR: OperatorUser = {
   operatorId: 'NOC-OP-77491',
@@ -47,6 +53,14 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         { label: 'Consistent Monthly Spend', impact: 'POSITIVE', detail: 'Averages IDR 450,000 monthly auto-debit payments.' },
         { label: 'Low IMEI Churn', impact: 'POSITIVE', detail: 'Maintained same device IMEI for 14 months.' },
         { label: 'Zero Default Incidents', impact: 'POSITIVE', detail: '100% on-time billing cycle settlements.' },
+      ],
+      scoreHistory: [
+        { month: 'May 2026', monthShort: 'May', score: 730, grade: 'A', change: 0, changeDirection: 'STABLE', event: 'Baseline evaluation & auto-debit registration' },
+        { month: 'Jun 2026', monthShort: 'Jun', score: 738, grade: 'A', change: 8, changeDirection: 'UP', event: 'Prompt bill settlement & data bundle continuity' },
+        { month: 'Jul 2026', monthShort: 'Jul', score: 745, grade: 'A', change: 7, changeDirection: 'UP', event: 'Long-term SIM tenure milestone reached' },
+        { month: 'Aug 2026', monthShort: 'Aug', score: 752, grade: 'A', change: 7, changeDirection: 'UP', event: 'Zero roaming surcharge delinquency' },
+        { month: 'Sep 2026', monthShort: 'Sep', score: 760, grade: 'A', change: 8, changeDirection: 'UP', event: 'Device stability index increased (zero IMEI swap)' },
+        { month: 'Oct 2026', monthShort: 'Oct', score: 768, grade: 'A (Prime)', change: 8, changeDirection: 'UP', event: 'Current cycle evaluated with 99.2% timeliness' },
       ],
     },
     appUsageSummary: {
@@ -660,6 +674,7 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         carrier: 'TelcoNet Indonesia Prepaid',
       },
     ],
+    familyTree: BUDI_FAMILY_TREE,
   },
 
   {
@@ -694,6 +709,14 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         { label: 'Flawless Payment History', impact: 'POSITIVE', detail: 'Zero late payments in 68 months.' },
         { label: 'High Postpaid Billing Tier', impact: 'POSITIVE', detail: 'Consistent IDR 680,000 corporate package subscription.' },
         { label: 'Verified Corporate Endorsement', impact: 'POSITIVE', detail: 'Enterprise financial institution account registration.' },
+      ],
+      scoreHistory: [
+        { month: 'May 2026', monthShort: 'May', score: 798, grade: 'A+', change: 0, changeDirection: 'STABLE', event: 'Corporate priority tier renewal' },
+        { month: 'Jun 2026', monthShort: 'Jun', score: 802, grade: 'A+', change: 4, changeDirection: 'UP', event: 'BCA Prioritas auto-debit clearance' },
+        { month: 'Jul 2026', monthShort: 'Jul', score: 805, grade: 'A+', change: 3, changeDirection: 'UP', event: 'Continuous premium postpaid usage' },
+        { month: 'Aug 2026', monthShort: 'Aug', score: 808, grade: 'A+', change: 3, changeDirection: 'UP', event: 'Corporate endorsement verified' },
+        { month: 'Sep 2026', monthShort: 'Sep', score: 810, grade: 'A+', change: 2, changeDirection: 'UP', event: 'Low hardware churn maintenance' },
+        { month: 'Oct 2026', monthShort: 'Oct', score: 812, grade: 'A+ (Elite)', change: 2, changeDirection: 'UP', event: 'Flawless 68-month payment record' },
       ],
     },
     appUsageSummary: {
@@ -946,6 +969,7 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         carrier: 'TelcoNet Indonesia Postpaid',
       },
     ],
+    familyTree: SITI_FAMILY_TREE,
   },
 
   {
@@ -980,6 +1004,14 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         { label: 'Heavy Bandwidth Consumer', impact: 'POSITIVE', detail: 'High active data session engagement.' },
         { label: 'Moderate SIM Tenure', impact: 'NEUTRAL', detail: 'Subscribed for 28 months.' },
         { label: 'One Late Payment', impact: 'NEGATIVE', detail: 'Payment delayed by 3 days in June 2026.' },
+      ],
+      scoreHistory: [
+        { month: 'May 2026', monthShort: 'May', score: 685, grade: 'B', change: 0, changeDirection: 'STABLE', event: 'Postpaid line active baseline' },
+        { month: 'Jun 2026', monthShort: 'Jun', score: 672, grade: 'C', change: -13, changeDirection: 'DOWN', event: '3-day delayed invoice payment flagged' },
+        { month: 'Jul 2026', monthShort: 'Jul', score: 688, grade: 'B', change: 16, changeDirection: 'UP', event: 'Full balance settled with penalty fee' },
+        { month: 'Aug 2026', monthShort: 'Aug', score: 700, grade: 'B', change: 12, changeDirection: 'UP', event: 'Two consecutive on-time bill settlements' },
+        { month: 'Sep 2026', monthShort: 'Sep', score: 710, grade: 'B', change: 10, changeDirection: 'UP', event: 'Heavy 5G data consumption behavior' },
+        { month: 'Oct 2026', monthShort: 'Oct', score: 720, grade: 'B (Standard)', change: 10, changeDirection: 'UP', event: 'Credit standing restored to Standard tier' },
       ],
     },
     appUsageSummary: {
@@ -1145,6 +1177,7 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         carrier: 'TelcoNet Indonesia Postpaid',
       },
     ],
+    familyTree: REZA_FAMILY_TREE,
   },
 
   {
@@ -1179,6 +1212,14 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         { label: '6 Years Continuous Line Tenure', impact: 'POSITIVE', detail: 'Primary corporate line active since 2020.' },
         { label: 'Frequent International Roaming Settled', impact: 'POSITIVE', detail: 'Always settles overseas roaming surcharges in full.' },
         { label: 'Verified Government Corporate Account', impact: 'POSITIVE', detail: 'Linked to certified business tax ID (NPWP).' },
+      ],
+      scoreHistory: [
+        { month: 'May 2026', monthShort: 'May', score: 770, grade: 'A', change: 0, changeDirection: 'STABLE', event: 'Overseas business roaming settled in full' },
+        { month: 'Jun 2026', monthShort: 'Jun', score: 776, grade: 'A', change: 6, changeDirection: 'UP', event: 'High monthly recharge commitment' },
+        { month: 'Jul 2026', monthShort: 'Jul', score: 782, grade: 'A', change: 6, changeDirection: 'UP', event: 'Enterprise account link verified' },
+        { month: 'Aug 2026', monthShort: 'Aug', score: 787, grade: 'A', change: 5, changeDirection: 'UP', event: 'Zero dispute history verified' },
+        { month: 'Sep 2026', monthShort: 'Sep', score: 791, grade: 'A+', change: 4, changeDirection: 'UP', event: 'Continuous 72-month tenure milestone' },
+        { month: 'Oct 2026', monthShort: 'Oct', score: 795, grade: 'A+ (Elite)', change: 4, changeDirection: 'UP', event: 'Prime postpaid rating confirmed' },
       ],
     },
     appUsageSummary: {
@@ -1403,5 +1444,6 @@ export const MOCK_SUBSCRIBERS: Subscriber[] = [
         carrier: 'TelcoNet Indonesia Postpaid',
       },
     ],
+    familyTree: DEWI_FAMILY_TREE,
   },
 ];

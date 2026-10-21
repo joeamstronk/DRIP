@@ -1,6 +1,7 @@
 import React from 'react';
 import { Award, CheckCircle, TrendingUp, Calendar, Smartphone, CreditCard, ShieldAlert } from 'lucide-react';
 import { TelcoCreditScore } from '../../types/ipdr';
+import { CreditScoreSparkline } from './CreditScoreSparkline';
 
 interface CreditScoreCardProps {
   creditScore: TelcoCreditScore;
@@ -154,6 +155,12 @@ export const CreditScoreCard: React.FC<CreditScoreCardProps> = ({ creditScore })
           </div>
         </div>
       </div>
+
+      {/* 6-Month Credit Score Sparkline & Stability Trend */}
+      <CreditScoreSparkline
+        history={creditScore.scoreHistory}
+        currentScore={creditScore.score}
+      />
 
       {/* Credit Factors List */}
       <div className="pt-2 border-t border-slate-100">
